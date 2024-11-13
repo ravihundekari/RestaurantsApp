@@ -9,6 +9,11 @@ import com.example.restaurantsapp.data.repository.RestaurantRepository
 import com.example.restaurantsapp.utils.network.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,51 +22,22 @@ class RestaurantListViewModel @Inject constructor(
     private val restaurantRepository: RestaurantRepository,
 ) : ViewModel() {
 
-    val restaurantItems: MutableState<List<RestaurantItem>?> = mutableStateOf(null)
-    val isLoading: MutableState<Boolean> = mutableStateOf(true)
-    val error: MutableState<String?> = mutableStateOf(null)
+    private val _restaurantItems: MutableStateFlow<DataState<List<RestaurantItem>>> = MutableStateFlow(DataState.Loading)
+    val restaurantItems : StateFlow<DataState<List<RestaurantItem>>>
+        get() = _restaurantItems.asStateFlow()
 
-    fun getNearbyRestaurants() = viewModelScope.launch {
-        async { restaurantRepository.getRestaurants() }.await().collect { restaurantsItem ->
-            when (restaurantsItem) {
-                is DataState.Error -> {
-                    error.value = restaurantsItem.exception.message
-                    isLoading.value = false
-                }
+    init {
+        getNearbyRestaurants()
+    }
 
-                DataState.Loading -> {
-                    error.value = null
-                    isLoading.value = true
-                }
-
-                is DataState.Success -> {
-                    val list: List<RestaurantItem> =
-                        restaurantsItem.data.restaurantItemList
-                    list.forEach { item ->
-                        try {
-                            async { restaurantRepository.getRestaurantPhotos(item.fsqId) }.await()
-                                .collect { restaurantImages ->
-                                    when (restaurantImages) {
-                                        is DataState.Error -> {}
-
-                                        DataState.Loading -> {}
-
-                                        is DataState.Success -> {
-                                            item.restaurantsPhotos = restaurantImages.data
-                                        }
-                                    }
-                                }
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    }
-                    restaurantItems.value = list
-                    isLoading.value = false
-                    error.value = null
-                }
+    fun getNearbyRestaurants()  {
+        viewModelScope.launch{
+            restaurantRepository.getRestaurants().collect{
+                _restaurantItems.value = it
             }
         }
     }
+
 }
 
 

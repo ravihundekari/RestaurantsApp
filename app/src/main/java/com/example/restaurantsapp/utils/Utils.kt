@@ -6,7 +6,12 @@ import coil.request.ErrorResult
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.example.restaurantsapp.R
+import com.example.restaurantsapp.utils.network.DataState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 
 object Utils {
     fun imageRequest(
@@ -38,5 +43,12 @@ object Utils {
             .memoryCachePolicy(CachePolicy.ENABLED)
             .build()
         return imageRequest
+    }
+
+    fun <T> Flow<T>.asResult(): Flow<DataState<T>> {
+        return this
+            .map<T, DataState<T>> { DataState.Success(it) }
+            .onStart { emit(DataState.Loading) }
+            .catch { emit(DataState.Error(it)) }
     }
 }
