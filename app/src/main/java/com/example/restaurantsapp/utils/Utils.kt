@@ -49,6 +49,6 @@ object Utils {
         return this
             .map<T, DataState<T>> { DataState.Success(it) }
             .onStart { emit(DataState.Loading) }
-            .catch { emit(DataState.Error(it)) }
+            .catch { emit(DataState.Error(it.message)) }
     }
 }

@@ -1,7 +1,7 @@
 package com.example.restaurantsapp.di
 
 import com.example.restaurantsapp.data.datasource.remote.ApiService
-import com.example.restaurantsapp.data.repository.RestaurantRepository
+import com.example.restaurantsapp.data.repositories.RestaurantRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,8 +15,8 @@ class RepositoryModule {
     @Provides
     fun provideRestaurantRepository(
         apiService: ApiService,
-    ): RestaurantRepository {
-        return RestaurantRepository(apiService)
+    ): RestaurantRepositoryImpl {
+        return RestaurantRepositoryImpl(apiService)
     }
 
 }

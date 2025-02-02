@@ -11,10 +11,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import com.example.restaurantsapp.R
-import com.example.restaurantsapp.data.model.RestaurantItem
-import com.example.restaurantsapp.data.model.RestaurantItemArgType
-import com.example.restaurantsapp.ui.screens.details.RestaurantDetailsScreen
-import com.example.restaurantsapp.ui.screens.list.RestaurantsListScreen
+import com.example.restaurantsapp.domain.model.RestaurantItem
+import com.example.restaurantsapp.domain.model.RestaurantItemArgType
+import com.example.restaurantsapp.presentation.screens.details.RestaurantDetailsScreen
+import com.example.restaurantsapp.presentation.screens.list.RestaurantsListScreen
 import com.google.gson.Gson
 
 @Composable

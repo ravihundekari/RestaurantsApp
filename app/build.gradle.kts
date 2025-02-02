@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace = "com.example.restaurantsapp"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.restaurantsapp"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -69,6 +69,7 @@ dependencies {
     //Hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.android.testing)
+    implementation(libs.androidx.navigation.compose)
     kapt(libs.hilt.compiler)
     kaptAndroidTest(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)

@@ -9,7 +9,7 @@ import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import com.example.restaurantsapp.navigation.Navigation
 import com.example.restaurantsapp.navigation.Screen
-import com.example.restaurantsapp.ui.MainActivity
+import com.example.restaurantsapp.presentation.MainActivity
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
